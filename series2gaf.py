@@ -14,7 +14,7 @@ def GenerateGAF(all_ts, window_size, rolling_length, fname, normalize_window_sca
     moving_window_size = int(window_size * normalize_window_scaling)
     
     # 根據我們的滾動大小，將資料切成一組一組
-    n_rolling_data = int(np.floor((n - moving_window_size)/rolling_length))
+    n_rolling_data = 1 + int(np.floor((n - moving_window_size)/rolling_length))
     
     # 最終的 GAF
     gramian_field = []
@@ -30,6 +30,7 @@ def GenerateGAF(all_ts, window_size, rolling_length, fname, normalize_window_sca
         
         # 整個窗格的資料先從輸入時間序列中取出來
         full_window_data =  list(all_ts[start_flag : start_flag+moving_window_size])
+        #. print(start_flag, start_flag+moving_window_size)
 
         # 紀錄窗格的資料，用來畫圖
         #Prices.append(full_window_data[-int(window_size*(normalize_window_scaling-1)):])
@@ -66,6 +67,7 @@ def GenerateGAF(all_ts, window_size, rolling_length, fname, normalize_window_sca
     
     # 輸出 Gramian Angular Field
     np.array(gramian_field).dump('%s_gaf.pkl'%fname)
+    print('Saved %s_gaf.pkl'%fname)
 
     # 清理記憶體占用
     del gramian_field
